@@ -1,4 +1,4 @@
-﻿namespace CollectionLibrary;
+﻿namespace CollectionLibrary.CollectibleItems;
 
 public class CollectionItemType
 {
