@@ -1,6 +1,6 @@
 ﻿namespace CollectionLibrary.CollectibleItems;
 
-public class Country
+public class Country : IHasId
 {
     public virtual int Id {get; set;}
     public virtual string Name { get; set; }

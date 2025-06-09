@@ -1,6 +1,6 @@
 ﻿namespace CollectionLibrary.CollectibleItems;
 
-public abstract class CollectibleItem
+public abstract class CollectibleItem : IHasId
 {
     public virtual int Id { get; set; }
     public virtual CollectionItemType ItemType { get; init; }
