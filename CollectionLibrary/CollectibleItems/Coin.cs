@@ -2,8 +2,13 @@
 
 public class Coin : CollectibleItem
 {
-    public string Nominal {get; set;}
-    public string Currency {get; set;}
+    public virtual string Nominal {get; set;}
+    public virtual string Currency {get; set;}
+    public virtual int Year {get; set;}
+
+    public Coin()
+    {
+    }
     public Coin(string nominal, string currency, CollectionItemType collectionItemType, Country? country):
         base(collectionItemType, country)
     {
