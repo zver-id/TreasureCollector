@@ -1,4 +1,8 @@
-﻿using FluentNHibernate.Automapping;
+﻿using System.Linq;
+using System.Reflection;
+using CollectionLibrary.Nhibernate.Infrastructure;
+using FluentNHibernate.Automapping;
+using FluentNHibernate.Mapping;
 
 namespace NHibernate.Infrastructure;
 

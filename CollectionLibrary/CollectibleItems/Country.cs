@@ -1,10 +1,18 @@
-﻿namespace CollectionLibrary.CollectibleItems;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using CollectionLibrary.Nhibernate.Infrastructure;
+using NHibernate.Mapping;
+
+namespace CollectionLibrary.CollectibleItems;
 
 public class Country : IHasId
 {
     public virtual int Id {get; set;}
+    
+    [Unique]
     public virtual string Name { get; set; }
 
+    [Obsolete("Only for reflection", true)]
     public Country()
     {
     }

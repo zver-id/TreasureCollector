@@ -27,6 +27,12 @@ public static class NhibernateHelper
     {
         new SchemaUpdate(configuration).Execute(true, true);
     }
+    
+    private static AutoPersistenceModel GetAutoPersistenceModel() =>
+        AutoMap.AssemblyOf<CollectibleItem>(new StoreConfiguration())
+            //.Conventions.AddFromAssemblyOf<IdConvention>()
+            //.Conventions.AddFromAssemblyOf<NHibernateInitializer>()
+            .UseOverridesFromAssemblyOf<CollectibleItem>();
 
     private static ISessionFactory CreateSessionFactory()
     {
@@ -34,9 +40,10 @@ public static class NhibernateHelper
         string connectionString = Settings.DatabaseConnection;
         return Fluently.Configure()
             .Database(PostgreSQLConfiguration.Standard
-                .ConnectionString(connectionString)) 
-            .Mappings(m => m.AutoMappings
-                .Add(AutoMap.AssemblyOf<CollectionItemType>(cfg)))
+                .ConnectionString(connectionString))
+            .Mappings(x => x.AutoMappings.Add(GetAutoPersistenceModel()))
+            //.Mappings(m => m.AutoMappings
+            //    .Add(AutoMap.AssemblyOf<CollectionItemType>(cfg)))
             .ExposeConfiguration(Expose)
             .BuildSessionFactory();
     }
