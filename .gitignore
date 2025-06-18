@@ -12,3 +12,5 @@ global.json
 CollectionLibrary/Nhibernate.Infrastructure/Settings.cs
 
 ConsoleCRUD/
+
+Nhibernate.Infrastucture/settings.json

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using CollectionLibrary.CollectibleItems;
+﻿using CollectionLibrary.CollectibleItems;
 using CollectionLibrary.Nhibernate.Infrastructure;
 using NHibernate;
 using NHibernate.Criterion;
@@ -8,7 +6,7 @@ using NHibernate.Infrastructure;
 
 namespace CollectionLibrary.Collection;
 
-public class Collection
+public class DBReposytory
 {
     /// <summary>
     /// Добавление в базу данных нового объекта
@@ -16,18 +14,14 @@ public class Collection
     /// <param name="item">Добавяемый объект</param>
     public void Add(IHasId item)
     {
-        var typeOfItem = item.GetType();
-        var uniqueProperties = typeOfItem.GetProperties()
-            .Where(x => x.GetCustomAttributes(typeof(UniqueAttribute), true).Length != 0)
-            .ToList();
-        
-        foreach (var property in uniqueProperties)
+        try
         {
-            var existItem = Get<IHasId>(property.Name, property.GetValue(item));
-            if (existItem == null)
-                continue;
-            return;
-            // $"Элемент типа {typeOfItem} c параметром {property.Name} и значением {property.GetValue(item)} уже существует");
+            IsExist(item);
+        }
+        catch (ArgumentException ex)
+        {
+            //TODO нужно понять как это обработать
+            throw ex;
         }
         using (var session = NhibernateHelper.OpenSession())
         {
@@ -44,6 +38,9 @@ public class Collection
     /// <param name="item">Объект свойства, которого будут обновляться</param>
     public void Update(IHasId item)
     {
+        if (IsExist(item))
+            return;
+        
         using (var session = NhibernateHelper.OpenSession() )
         {
             using (ITransaction  transaction = session.BeginTransaction())
@@ -82,4 +79,27 @@ public class Collection
             return (T)criteria.UniqueResult();
         }
     }
+
+    /// <summary>
+    /// Проверка существования объекта в БД по уникальным полям
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>Признак существует ли объект с этими полями в базе данных</returns>
+    private bool IsExist(IHasId item)
+    {
+        var typeOfItem = item.GetType();
+        var uniqueProperties = typeOfItem.GetProperties()
+            .Where(x => x.GetCustomAttributes(typeof(UniqueAttribute), true).Length != 0)
+            .ToList();
+        
+        foreach (var property in uniqueProperties)
+        {
+            var existItem = Get<IHasId>(property.Name, property.GetValue(item));
+            if (existItem == null)
+                continue;
+            throw new ArgumentException(
+                $"Элемент типа {typeOfItem} c параметром {property.Name} и значением {property.GetValue(item)} уже существует");
+        }
+        return false;
+    } 
 }

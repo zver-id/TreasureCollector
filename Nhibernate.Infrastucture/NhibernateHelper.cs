@@ -37,10 +37,11 @@ public static class NhibernateHelper
     private static ISessionFactory CreateSessionFactory()
     {
         var cfg = new StoreConfiguration();
-        string connectionString = Settings.DatabaseConnection;
+        string connectionString = Settings.DatabaseConnectionString;
         return Fluently.Configure()
             .Database(PostgreSQLConfiguration.Standard
-                .ConnectionString(connectionString))
+                .ConnectionString(connectionString)
+                .ShowSql())
             .Mappings(x => x.AutoMappings.Add(GetAutoPersistenceModel()))
             //.Mappings(m => m.AutoMappings
             //    .Add(AutoMap.AssemblyOf<CollectionItemType>(cfg)))

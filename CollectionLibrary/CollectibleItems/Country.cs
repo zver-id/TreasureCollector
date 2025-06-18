@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using CollectionLibrary.Nhibernate.Infrastructure;
-using NHibernate.Mapping;
 
 namespace CollectionLibrary.CollectibleItems;
 
