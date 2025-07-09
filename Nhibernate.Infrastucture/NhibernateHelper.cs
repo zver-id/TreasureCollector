@@ -9,17 +9,17 @@ namespace NHibernate.Infrastructure;
 
 public static class NhibernateHelper
 {
-    private static ISessionFactory _sessionFactory;
+    private static ISessionFactory sessionFactory;
 
-    public static ISessionFactory SessionFactory
+    private static ISessionFactory SessionFactory
     {
         get
         {
-            if (_sessionFactory == null)
+            if (sessionFactory == null)
             {
-                _sessionFactory = CreateSessionFactory();
+                sessionFactory = CreateSessionFactory();
             }
-            return _sessionFactory;
+            return sessionFactory;
         }
     }
     

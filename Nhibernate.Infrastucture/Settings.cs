@@ -6,11 +6,12 @@ namespace NHibernate.Infrastructure;
 
 public static class Settings
 {
-    public static readonly string DatabaseConnectionString;
+  public static readonly string DatabaseConnectionString;
 
     static Settings()
     {
-        var settingsJson = File.ReadAllText("settings.json");
+        string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var settingsJson = File.ReadAllText(Path.Combine(assemblyPath, "settings.json"));
         dynamic settings = JsonConvert.DeserializeObject(settingsJson)!;
         var type = typeof(Settings);
         foreach (var setting in settings)

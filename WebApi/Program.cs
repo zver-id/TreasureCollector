@@ -1,3 +1,5 @@
+using TreasureCollector.Application.Services;
+
 namespace WebApi;
 
 public class Program
@@ -12,6 +14,8 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddSingleton<ItemsService>();
 
         builder.Services.AddControllers();
 

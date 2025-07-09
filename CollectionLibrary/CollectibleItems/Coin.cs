@@ -6,6 +6,11 @@ public class Coin : CollectibleItem
     public virtual string Currency {get; set;}
     public virtual int Year {get; set;}
 
+    public override string ToString()
+    {
+        return this.Name;
+    }
+
     public Coin()
     {
     }
