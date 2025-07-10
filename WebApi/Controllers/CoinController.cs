@@ -34,7 +34,7 @@ public class CoinController : ControllerBase
   {
     if (coin == null)
       return  BadRequest("Coin cannot be null");
-    this.itemsService.AddItem(
+    await this.itemsService.AddItem(
       new Coin
       {
         Name = coin.name,

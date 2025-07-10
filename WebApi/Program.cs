@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using TreasureCollector.Application.Services;
 
 namespace WebApi;
@@ -7,6 +8,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        var corsPolicyName = "CorsPolicy";
 
         // Add services to the container.
         builder.Services.AddAuthorization();
@@ -16,6 +18,15 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddSingleton<ItemsService>();
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: corsPolicyName,
+                policyBuilder =>
+                {
+                    policyBuilder.AllowAnyOrigin();
+                });
+        });
 
         builder.Services.AddControllers();
 
@@ -31,6 +42,7 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+        app.UseCors(corsPolicyName);
         app.MapControllers();
         
         app.Run();
