@@ -14,20 +14,22 @@ public class ItemsService
   public Task AddItem(IHasId item)
   {
     //TODO добавить валидацию добавления
-    return Task.Run(() =>
-    {
-      this.repository.Add(item);
-      return Task.CompletedTask;
-    });
+    return Task.Run(() => 
+      {
+        this.repository.Add(item);
+        return Task.CompletedTask;
+      }
+    );
   }
 
   public Task UpdateItemAsync(IHasId item)
   {
     return Task.Run(() =>
-    {
-      this.repository.Update(item);
-      return Task.CompletedTask;
-    });
+      {
+        this.repository.Update(item);
+        return Task.CompletedTask;
+      }
+    );
   }
 
   public Task<T> GetItemByIdAsync<T>(int id)

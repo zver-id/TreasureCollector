@@ -6,9 +6,9 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class CountryController : ControllerBase
 {
-    [HttpGet]
-    public string Get()
-    {
-        return "SomeCountry";
-    }
+  [HttpGet]
+  public string Get()
+  {
+    return "SomeCountry";
+  }
 }
