@@ -6,3 +6,11 @@ riderModule.iml
 .idea/
 
 global.json
+
+*.user
+
+CollectionLibrary/Nhibernate.Infrastructure/Settings.cs
+
+ConsoleCRUD/
+
+Nhibernate.Infrastucture/settings.json
