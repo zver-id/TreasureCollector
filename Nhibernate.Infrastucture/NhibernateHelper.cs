@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg.Db;
 using CollectionLibrary.CollectibleItems;
 using FluentNHibernate.Automapping;
 using NHibernate.Cfg;
+using Nhibernate.Infrastucture;
 using NHibernate.Tool.hbm2ddl;
 
 namespace NHibernate.Infrastructure;
@@ -32,7 +33,7 @@ public static class NhibernateHelper
     AutoMap.AssemblyOf<CollectibleItem>(new StoreConfiguration())
       //.Conventions.AddFromAssemblyOf<IdConvention>()
       //.Conventions.AddFromAssemblyOf<NHibernateInitializer>()
-      .UseOverridesFromAssemblyOf<CollectibleItem>();
+      .UseOverridesFromAssemblyOf<DbRepository>();
 
   private static ISessionFactory CreateSessionFactory()
   {
