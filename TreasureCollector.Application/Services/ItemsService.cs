@@ -34,7 +34,9 @@ public class ItemsService
 
   public Task<T> GetItemByIdAsync<T>(int id)
   {
-    return Task.Run(() => this.repository.GetById<T>(id));
+    return Task.Run(
+      () => this.repository.GetById<T>(id)
+      );
   }
 
   public Task<List<T>> GetItemsByCriteria<T>(Func<T, bool> criteria)

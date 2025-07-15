@@ -13,33 +13,32 @@ public class CoinController : ControllerBase
   private ItemsService itemsService;
   
   [HttpGet]
-  public async Task<ActionResult<List<CoinResponse>>> GetAllCoins()
+  public async Task<ActionResult<List<PartialCoinResponse>>> GetAllCoins()
   {
     var coins = await this.itemsService.GetItemsByCriteria<Coin>(coin => true);
     var response = coins
-      .Select(coin => new CoinResponse(coin.Id, coin.Name, "Russia", coin.Currency, coin.Year));
+      .Select(coin => new PartialCoinResponse(coin));
     return Ok(response);
   }
 
   [HttpGet("{id}")]
-  public async Task<ActionResult<CoinResponse>> Get(int itemId)
+  public async Task<ActionResult<PartialCoinResponse>> Get(int id)
   {
-    var coin = await this.itemsService.GetItemByIdAsync<Coin>(itemId);
-    var response = new CoinResponse( coin.Id, coin.Name, "Russia", coin.Currency, coin.Year );
+    var coin = await this.itemsService.GetItemByIdAsync<Coin>(id);
+    var response = new FullCoinResponse(coin);
     return Ok(response);
   }
 
   [HttpPost]
-  public async Task<ActionResult<int>> Post([FromBody] CoinResponse coin)
+  public async Task<ActionResult<int>> Post([FromBody] PartialCoinResponse partialCoin)
   {
-    if (coin == null)
+    if (partialCoin == null)
       return  BadRequest("Coin cannot be null");
     await this.itemsService.AddItem(
       new Coin
       {
-        Name = coin.name,
-        Currency = coin.currency,
-        Year = coin.year,
+        Name = partialCoin.Name,
+        Year = partialCoin.Year,
       });
     return Ok(1);
   }
