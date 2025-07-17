@@ -1,11 +1,11 @@
-﻿using CollectionLibrary.CollectibleItems;
+﻿using System.Reflection;
+using CollectionLibrary.CollectibleItems;
 using CollectionLibrary.Nhibernate.Infrastructure;
 using NHibernate;
 using NHibernate.Criterion;
-using NHibernate.Infrastructure;
 using TreasureCollector.Interfaces;
 
-namespace Nhibernate.Infrastucture;
+namespace DataBaseAccess;
 
 public class DbRepository : IItemsRepository
 {
@@ -58,7 +58,7 @@ public class DbRepository : IItemsRepository
     using var session = NhibernateHelper.OpenSession();
     ICriteria criteria = session.CreateCriteria(typeof(T));
     criteria.Add(Restrictions.Eq(fieldName, value));
-    return (T)criteria.UniqueResult();
+    return (T)criteria.List();
   }
 
   public List<T> GetByCriteria<T>(Func<T, bool> criteria) 
@@ -80,7 +80,7 @@ public class DbRepository : IItemsRepository
   private bool IsExist(IHasId item)
   {
     var typeOfItem = item.GetType();
-    var uniqueProperties = typeOfItem.GetProperties()
+    List<PropertyInfo> uniqueProperties = typeOfItem.GetProperties()
       .Where(x => x.GetCustomAttributes(typeof(UniqueAttribute), true).Length != 0)
       .ToList();
     

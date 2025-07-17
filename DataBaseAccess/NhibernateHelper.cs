@@ -1,12 +1,13 @@
-﻿using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using CollectionLibrary.CollectibleItems;
+﻿using CollectionLibrary.CollectibleItems;
 using FluentNHibernate.Automapping;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
+using NHibernate;
 using NHibernate.Cfg;
-using Nhibernate.Infrastucture;
 using NHibernate.Tool.hbm2ddl;
+using Settings = DataBaseAccess.Settings;
 
-namespace NHibernate.Infrastructure;
+namespace DataBaseAccess;
 
 public static class NhibernateHelper
 {

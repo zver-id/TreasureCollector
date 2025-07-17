@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace NHibernate.Infrastructure;
+namespace DataBaseAccess;
 
 public static class Settings
 {

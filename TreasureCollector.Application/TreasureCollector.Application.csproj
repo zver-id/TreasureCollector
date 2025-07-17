@@ -9,7 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TreasureCollector.Interfaces\TreasureCollector.Interfaces.csproj" />
-      <ProjectReference Include="..\Nhibernate.Infrastucture\Nhibernate.Infrastucture.csproj" />
+      <ProjectReference Include="..\DataBaseAccess\DataBaseAccess.csproj" />
     </ItemGroup>
 
 </Project>

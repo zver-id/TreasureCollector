@@ -11,7 +11,7 @@ public class Country : IHasId
   [Unique]
   public virtual string Name { get; set; }
 
-  [Obsolete("Only for reflection", true)]
+  [Obsolete("Только для использования в NHibernate", true)]
   public Country()
   {
   }

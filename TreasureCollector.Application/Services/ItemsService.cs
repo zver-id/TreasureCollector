@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CollectionLibrary.CollectibleItems;
-using Nhibernate.Infrastucture;
+using DataBaseAccess;
 using TreasureCollector.Interfaces;
 
 namespace TreasureCollector.Application.Services;

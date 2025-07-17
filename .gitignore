@@ -14,3 +14,5 @@ CollectionLibrary/Nhibernate.Infrastructure/Settings.cs
 ConsoleCRUD/
 
 Nhibernate.Infrastucture/settings.json
+
+DataBaseAccess/settings.json
