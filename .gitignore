@@ -16,3 +16,6 @@ ConsoleCRUD/
 Nhibernate.Infrastucture/settings.json
 
 DataBaseAccess/settings.json
+
+.vs/
+

@@ -9,17 +9,13 @@ namespace DataBaseAccess;
 
 public class DbRepository : IItemsRepository
 {
+  #region IItemsRepository
+  
   public void Add(IHasId item)
   {
-    try
-    {
-      this.IsExist(item);
-    }
-    catch (ArgumentException ex)
-    {
-      //TODO нужно понять как это обработать
-      throw ex;
-    }
+    if (IsExist(item))
+      throw new ArgumentException($"Элемент типа {item} уже существует");
+    
     using (var session = NhibernateHelper.OpenSession())
     {
       using (ITransaction  transaction = session.BeginTransaction())
@@ -29,6 +25,22 @@ public class DbRepository : IItemsRepository
       }
     }
   }
+  
+  public T Get<T>(string fieldName, object value)
+  {
+    Type typeOfValue = typeof(T);
+    PropertyInfo? property = typeOfValue.GetProperty(fieldName);
+    var uniqueAttribute = property?.GetCustomAttribute<UniqueAttribute>();
+    if (property == null || uniqueAttribute == null)
+      throw new ArgumentException("Свойство не уникально или не существует у объекта");
+    using var session = NhibernateHelper.OpenSession();
+    ICriteria criteria = session.CreateCriteria(typeof(T));
+    criteria.Add(Restrictions.Eq(fieldName, value));
+    return (T)criteria.UniqueResult();
+  }
+
+  #endregion
+
 
   public void Update(IHasId item)
   {
@@ -53,13 +65,7 @@ public class DbRepository : IItemsRepository
     }
   }
 
-  public T Get<T>(string fieldName, object value)
-  {
-    using var session = NhibernateHelper.OpenSession();
-    ICriteria criteria = session.CreateCriteria(typeof(T));
-    criteria.Add(Restrictions.Eq(fieldName, value));
-    return (T)criteria.List();
-  }
+
 
   public List<T> GetByCriteria<T>(Func<T, bool> criteria) 
   {
@@ -79,18 +85,20 @@ public class DbRepository : IItemsRepository
   /// <returns>Признак существует ли объект с этими полями в базе данных</returns>
   private bool IsExist(IHasId item)
   {
-    var typeOfItem = item.GetType();
+    Type typeOfItem = item.GetType();
     List<PropertyInfo> uniqueProperties = typeOfItem.GetProperties()
       .Where(x => x.GetCustomAttributes(typeof(UniqueAttribute), true).Length != 0)
       .ToList();
+
+    MethodInfo? getMethodInfo = typeof(DbRepository).GetMethod("Get");
+    MethodInfo? getMethod = getMethodInfo?.MakeGenericMethod(typeOfItem);
     
     foreach (var property in uniqueProperties)
     {
-      var existItem = this.Get<IHasId>(property.Name, property.GetValue(item));
+      var existItem = getMethod?.Invoke(this, new object[] {property.Name, property.GetValue(item)});
       if (existItem == null)
         continue;
-      throw new ArgumentException(
-        $"Элемент типа {typeOfItem} c параметром {property.Name} и значением {property.GetValue(item)} уже существует");
+      return true;
     }
     return false;
   } 
