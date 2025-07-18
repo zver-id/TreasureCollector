@@ -30,7 +30,7 @@ public interface IItemsRepository
   public T GetById<T>(int id);
 
   /// <summary>
-  /// Получить объект по свойству и его значению.
+  /// Получить объект по его уникальному свойству и его значению.
   /// </summary>
   /// <param name="fieldName">Имя свойства.</param>
   /// <param name="value">Значение свойства.</param>
@@ -41,7 +41,7 @@ public interface IItemsRepository
   /// <summary>
   /// Получить типы объекта по критерию.
   /// </summary>
-  /// <typeparam name="T">Тип значений,которые нужно получить.</typeparam>
+  /// <typeparam name="T">Тип значений, которые нужно получить.</typeparam>
   /// <typeparam name="criteria">Функция для выборки значений.</typeparam>
   /// <returns>Список объектов.</returns>
   public List<T> GetByCriteria<T>(Func<T, bool> criteria);

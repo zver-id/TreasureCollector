@@ -33,19 +33,17 @@ public class DbRepository : IItemsRepository
     var uniqueAttribute = property?.GetCustomAttribute<UniqueAttribute>();
     if (property == null || uniqueAttribute == null)
       throw new ArgumentException("Свойство не уникально или не существует у объекта");
+    
     using var session = NhibernateHelper.OpenSession();
     ICriteria criteria = session.CreateCriteria(typeof(T));
     criteria.Add(Restrictions.Eq(fieldName, value));
     return (T)criteria.UniqueResult();
   }
-
-  #endregion
-
-
+  
   public void Update(IHasId item)
   {
     if (this.IsExist(item))
-      return;
+      throw new ArgumentException("Элемент с такими параметрами уже существует.");
     
     using (var session = NhibernateHelper.OpenSession() )
     {
@@ -56,6 +54,11 @@ public class DbRepository : IItemsRepository
       }
     }
   }
+
+  #endregion
+
+
+
 
   public T GetById<T>(int id)
   {
