@@ -40,6 +40,25 @@ public class DbRepository : IItemsRepository
     return (T)criteria.UniqueResult();
   }
   
+  public T GetById<T>(int id)
+  {
+    using (var session = NhibernateHelper.OpenSession() )
+    {
+      return session.Get<T>(id);
+    }
+  }
+  
+  public List<T> GetByCriteria<T>(Func<T, bool> criteria) 
+  {
+    using (var session = NhibernateHelper.OpenSession() )
+    {
+      return session.Query<T>()
+        .AsEnumerable()
+        .Where(criteria)
+        .ToList();
+    }
+  }
+  
   public void Update(IHasId item)
   {
     if (this.IsExist(item))
@@ -55,31 +74,26 @@ public class DbRepository : IItemsRepository
     }
   }
 
+  public void Delete(IHasId item)
+  {
+    using var session = NhibernateHelper.OpenSession();
+    using (ITransaction  transaction = session.BeginTransaction())
+    {
+      session.Delete(item);
+      transaction.Commit();
+    }
+  } 
+
   #endregion
 
 
 
 
-  public T GetById<T>(int id)
-  {
-    using (var session = NhibernateHelper.OpenSession() )
-    {
-       return session.Get<T>(id);
-    }
-  }
 
 
 
-  public List<T> GetByCriteria<T>(Func<T, bool> criteria) 
-  {
-    using (var session = NhibernateHelper.OpenSession() )
-    {
-      return session.Query<T>()
-        .AsEnumerable()
-        .Where(criteria)
-        .ToList();
-    }
-  }
+
+
 
   /// <summary>
   /// Проверка существования объекта в БД по уникальным полям

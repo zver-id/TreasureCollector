@@ -45,4 +45,10 @@ public interface IItemsRepository
   /// <typeparam name="criteria">Функция для выборки значений.</typeparam>
   /// <returns>Список объектов.</returns>
   public List<T> GetByCriteria<T>(Func<T, bool> criteria);
+
+  /// <summary>
+  /// Удалить объект.
+  /// </summary>
+  /// <param name="item">Объект.</param>
+  public void Delete(IHasId item);
 }
