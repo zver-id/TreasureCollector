@@ -45,6 +45,17 @@ public class DbRepositoryTests
     });
   }
 
+  [Test]
+  public void Update_ExistsCoin_UpdateSuccessfully()
+  {
+    Coin expectedCoin = this.repository.Get<Coin>("Name", "1 dollar");
+    expectedCoin.Name = "25 dollars";
+    expectedCoin.Nominal = "25";
+    this.repository.Update(expectedCoin);
+    Coin actualCoin = this.repository.Get<Coin>("Name", "25 dollars");
+    Assert.That(actualCoin.Id, Is.EqualTo(expectedCoin.Id));
+  }
+
   [TearDown]
   public void TearDown()
   {
