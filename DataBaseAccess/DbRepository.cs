@@ -7,8 +7,40 @@ using TreasureCollector.Interfaces;
 
 namespace DataBaseAccess;
 
+/// <summary>
+/// Хранилище информации в базе данных
+/// </summary>
 public class DbRepository : IItemsRepository
 {
+  #region Методы
+
+  /// <summary>
+  /// Проверка существования объекта в БД по уникальным полям
+  /// </summary>
+  /// <param name="item"></param>
+  /// <returns>Признак существует ли объект с этими полями в базе данных</returns>
+  private bool IsExist(IHasId item)
+  {
+    Type typeOfItem = item.GetType();
+    List<PropertyInfo> uniqueProperties = typeOfItem.GetProperties()
+      .Where(x => x.GetCustomAttributes(typeof(UniqueAttribute), true).Length != 0)
+      .ToList();
+
+    MethodInfo? getMethodInfo = typeof(DbRepository).GetMethod("Get");
+    MethodInfo? getMethod = getMethodInfo?.MakeGenericMethod(typeOfItem);
+    
+    foreach (var property in uniqueProperties)
+    {
+      var existItem = getMethod?.Invoke(this, new object[] {property.Name, property.GetValue(item)});
+      if (existItem == null)
+        continue;
+      return true;
+    }
+    return false;
+  } 
+
+  #endregion
+  
   #region IItemsRepository
   
   public void Add(IHasId item)
@@ -40,6 +72,25 @@ public class DbRepository : IItemsRepository
     return (T)criteria.UniqueResult();
   }
   
+  public T GetById<T>(int id)
+  {
+    using (var session = NhibernateHelper.OpenSession() )
+    {
+      return session.Get<T>(id);
+    }
+  }
+  
+  public List<T> GetByCriteria<T>(Func<T, bool> criteria) 
+  {
+    using (var session = NhibernateHelper.OpenSession() )
+    {
+      return session.Query<T>()
+        .AsEnumerable()
+        .Where(criteria)
+        .ToList();
+    }
+  }
+  
   public void Update(IHasId item)
   {
     if (this.IsExist(item))
@@ -55,54 +106,15 @@ public class DbRepository : IItemsRepository
     }
   }
 
-  #endregion
-
-
-
-
-  public T GetById<T>(int id)
+  public void Delete(IHasId item)
   {
-    using (var session = NhibernateHelper.OpenSession() )
+    using var session = NhibernateHelper.OpenSession();
+    using (ITransaction  transaction = session.BeginTransaction())
     {
-       return session.Get<T>(id);
+      session.Delete(item);
+      transaction.Commit();
     }
-  }
-
-
-
-  public List<T> GetByCriteria<T>(Func<T, bool> criteria) 
-  {
-    using (var session = NhibernateHelper.OpenSession() )
-    {
-      return session.Query<T>()
-        .AsEnumerable()
-        .Where(criteria)
-        .ToList();
-    }
-  }
-
-  /// <summary>
-  /// Проверка существования объекта в БД по уникальным полям
-  /// </summary>
-  /// <param name="item"></param>
-  /// <returns>Признак существует ли объект с этими полями в базе данных</returns>
-  private bool IsExist(IHasId item)
-  {
-    Type typeOfItem = item.GetType();
-    List<PropertyInfo> uniqueProperties = typeOfItem.GetProperties()
-      .Where(x => x.GetCustomAttributes(typeof(UniqueAttribute), true).Length != 0)
-      .ToList();
-
-    MethodInfo? getMethodInfo = typeof(DbRepository).GetMethod("Get");
-    MethodInfo? getMethod = getMethodInfo?.MakeGenericMethod(typeOfItem);
-    
-    foreach (var property in uniqueProperties)
-    {
-      var existItem = getMethod?.Invoke(this, new object[] {property.Name, property.GetValue(item)});
-      if (existItem == null)
-        continue;
-      return true;
-    }
-    return false;
   } 
+
+  #endregion
 }

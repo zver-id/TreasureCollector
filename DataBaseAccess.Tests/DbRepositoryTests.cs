@@ -56,6 +56,19 @@ public class DbRepositoryTests
     Assert.That(actualCoin.Id, Is.EqualTo(expectedCoin.Id));
   }
 
+  [TestCase("3","pens", "USA")]
+  public void Delete_ExistCoin_DeleteSuccessfully(string nominal, string currency, string countryName)
+  {
+    var type = this.repository.Get<CollectionItemType>("Name", "Coin");
+    var country = this.repository.Get<Country>("Name", countryName);
+    var newCoin = new Coin(nominal, currency, type, country);
+    this.repository.Add(newCoin);
+    Coin forDelete = this.repository.Get<Coin>("Name", newCoin.Name);
+    this.repository.Delete(forDelete);
+    Coin actual = this.repository.Get<Coin>("Name", newCoin.Name);
+    Assert.IsNull(actual);
+  }
+
   [TearDown]
   public void TearDown()
   {
