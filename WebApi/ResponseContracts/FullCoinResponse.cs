@@ -1,8 +1,9 @@
 ﻿using CollectionLibrary.CollectibleItems;
+using TreasureCollector.Interfaces;
 
 namespace WebApi.ResponseContracts;
 
-public class FullCoinResponse
+public class FullCoinResponse : IResponse
 {
   public int Id { get; }
   public string ItemType { get; }

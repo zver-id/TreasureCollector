@@ -2,8 +2,8 @@
 
 public class Coin : CollectibleItem
 {
-  public virtual string Nominal {get; set;}
-  public virtual string Currency {get; set;}
+  public virtual string? Nominal {get; set;}
+  public virtual string? Currency {get; set;}
   public virtual int Year {get; set;}
 
   public override string ToString()
