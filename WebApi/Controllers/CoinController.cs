@@ -24,7 +24,7 @@ public class CoinController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  public async Task<ActionResult<PartialCoinResponse>> Get(int id)
+  public async Task<ActionResult<FullCoinResponse>> Get(int id)
   {
     var coin = await this.itemsService.GetItemByIdAsync<Coin>(id);
     var response = new FullCoinResponse(coin);
@@ -32,13 +32,18 @@ public class CoinController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<ActionResult<int>> Post([FromBody] PartialCoinResponse partialCoin, IMapper mapper)
+  public async Task<ActionResult<string>> Post([FromBody] PartialCoinResponse partialCoin, IMapper mapper)
   {
     if (partialCoin == null)
-      return  BadRequest("Coin cannot be null");
+      return  BadRequest(ResponseDescription.NotBeNull);
     var newCoin = mapper.Map<Coin>(partialCoin);
-    await this.itemsService.AddItem(newCoin);
-    return Ok(1);
+    var result = await this.itemsService.AddItem(newCoin);
+    if (result == ResultDescription.Success)
+      return this.Created();
+    else if (result == ResultDescription.IsExist)
+      return this.Conflict(result);
+    else
+      return this.BadRequest(ResponseDescription.UnexpectedResult);
   }
 
   public CoinController(IMapper mapper)

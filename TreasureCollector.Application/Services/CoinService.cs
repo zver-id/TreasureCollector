@@ -11,13 +11,20 @@ public class ItemsService
 {
   private readonly IItemsRepository repository = new DbRepository();
   
-  public Task AddItem(IHasId item)
+  public Task<string> AddItem(IHasId item)
   {
-    //TODO добавить валидацию добавления
     return Task.Run(() => 
       {
-        this.repository.Add(item);
-        return Task.CompletedTask;
+        try
+        {
+          this.repository.Add(item);
+        }
+        catch (ArgumentException)
+        {
+          return ResultDescription.IsExist;
+        }
+        
+        return ResultDescription.Success;
       }
     );
   }
