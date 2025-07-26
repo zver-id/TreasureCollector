@@ -1,5 +1,8 @@
+using AutoMapper;
+using FluentNHibernate.Cfg;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using TreasureCollector.Application.Services;
+using WebApi.Mappings;
 
 namespace WebApi;
 
@@ -18,6 +21,15 @@ public class Program
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddSingleton<ItemsService>();
+
+    ILoggerFactory loggerFactory = LoggerFactory.Create(logBuilder => logBuilder.AddJsonConsole());
+
+    var mappingConfig = new MapperConfiguration(
+      cfg => cfg.AddProfile<MappingsConfiguration>(),
+      loggerFactory);
+    var mapper = mappingConfig.CreateMapper();
+    builder.Services.AddSingleton(mapper);
+
 
     builder.Services.AddCors(options =>
     {

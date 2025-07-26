@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using AutoMapper;
 using CollectionLibrary.CollectibleItems;
 using Microsoft.AspNetCore.Mvc;
 using TreasureCollector.Application.Services;
@@ -11,6 +12,7 @@ namespace WebApi.Controllers;
 public class CoinController : ControllerBase
 {
   private ItemsService itemsService;
+  private IMapper mapper;
   
   [HttpGet]
   public async Task<ActionResult<List<PartialCoinResponse>>> GetAllCoins()
@@ -30,21 +32,18 @@ public class CoinController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<ActionResult<int>> Post([FromBody] PartialCoinResponse partialCoin)
+  public async Task<ActionResult<int>> Post([FromBody] PartialCoinResponse partialCoin, IMapper mapper)
   {
     if (partialCoin == null)
       return  BadRequest("Coin cannot be null");
-    await this.itemsService.AddItem(
-      new Coin
-      {
-        Name = partialCoin.Name,
-        Year = partialCoin.Year,
-      });
+    var newCoin = mapper.Map<Coin>(partialCoin);
+    await this.itemsService.AddItem(newCoin);
     return Ok(1);
   }
 
-  public CoinController()
+  public CoinController(IMapper mapper)
   {
     this.itemsService = new ItemsService();
+    this.mapper = mapper;
   }
 }

@@ -5,10 +5,10 @@ namespace WebApi.ResponseContracts;
 
 public class PartialCoinResponse : IResponse
 {
-  public int Id { get; }
-  public string Name { get; }
-  public string Country { get; }
-  public int Year { get; }
+  public int Id { get; set; }
+  public string Name { get; set; }
+  public string Country { get; set; }
+  public int Year { get; set; }
 
   public PartialCoinResponse() { }
 
