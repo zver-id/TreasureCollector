@@ -15,43 +15,60 @@ public class DbRepository : IItemsRepository
   #region Методы
 
   /// <summary>
-  /// Проверка существования объекта в БД по уникальным полям
+  /// Получить существующий объект в БД по уникальным полям
   /// </summary>
   /// <param name="item"></param>
-  /// <returns>Признак существует ли объект с этими полями в базе данных</returns>
-  private bool IsExist(IHasId item)
+  /// <returns>Существующий объект или null в случае отсутствия.</returns>
+  private IHasId? GetEqualFromDb(IHasId item)
   {
     Type typeOfItem = item.GetType();
     List<PropertyInfo> uniqueProperties = typeOfItem.GetProperties()
       .Where(x => x.GetCustomAttributes(typeof(UniqueAttribute), true).Length != 0)
       .ToList();
 
-    MethodInfo? getMethodInfo = typeof(DbRepository).GetMethod("Get");
-    MethodInfo? getMethod = getMethodInfo?.MakeGenericMethod(typeOfItem);
+    MethodInfo? getMethod = typeof(DbRepository)
+      .GetMethod("Get")?
+      .MakeGenericMethod(typeOfItem);
     
     foreach (var property in uniqueProperties)
     {
       var existItem = getMethod?.Invoke(this, new object[] {property.Name, property.GetValue(item)});
-      if (existItem == null)
-        continue;
-      return true;
+      if (existItem != null)
+        return existItem as IHasId;
     }
-    return false;
-  } 
-
+    return null;
+  }
+  
   #endregion
   
   #region IItemsRepository
   
   public void Add(IHasId item)
   {
-    if (IsExist(item))
+    if (this.GetEqualFromDb(item) != null)
       throw new ArgumentException($"Элемент типа {item} уже существует");
     
     using (var session = NhibernateHelper.OpenSession())
     {
       using (ITransaction  transaction = session.BeginTransaction())
       {
+        Type typeOfItem = item.GetType();
+        PropertyInfo[] propertyInfos = typeOfItem.GetProperties();
+        foreach (PropertyInfo propertyInfo in propertyInfos)
+        {
+          var typeOfProperty = propertyInfo.PropertyType;
+          if (typeof(IHasId).IsAssignableFrom(typeOfProperty))
+          {
+            var childItem = propertyInfo.GetValue(item);
+            if (childItem == null)
+              continue;
+            IHasId existPropertyValue = this.GetEqualFromDb(childItem as IHasId);
+            if (existPropertyValue != null)
+              propertyInfo.SetValue(item, existPropertyValue);
+            else
+              session.SaveOrUpdate(childItem);
+          }
+        }
         session.Save(item);
         transaction.Commit();
       }
@@ -93,7 +110,7 @@ public class DbRepository : IItemsRepository
   
   public void Update(IHasId item)
   {
-    if (this.IsExist(item))
+    if (this.GetEqualFromDb(item) != null)
       throw new ArgumentException("Элемент с такими параметрами уже существует.");
     
     using (var session = NhibernateHelper.OpenSession() )
