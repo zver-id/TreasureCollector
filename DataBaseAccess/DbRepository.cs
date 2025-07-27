@@ -38,7 +38,12 @@ public class DbRepository : IItemsRepository
     }
     return null;
   }
-
+  
+  /// <summary>
+  /// Сохранить или обновить все связанные объекты.
+  /// </summary>
+  /// <param name="item">Объект, у которого сохраняются связанные объекты.</param>
+  /// <param name="session">Сессия, в которой сохраняется объект.</param>
   private void SaveRelatedEntities(IHasId item, ISession session)
   {
     Type typeOfItem = item.GetType();
@@ -73,23 +78,7 @@ public class DbRepository : IItemsRepository
     {
       using (ITransaction transaction = session.BeginTransaction())
       {
-        Type typeOfItem = item.GetType();
-        PropertyInfo[] propertyInfos = typeOfItem.GetProperties();
-        foreach (PropertyInfo propertyInfo in propertyInfos)
-        {
-          var typeOfProperty = propertyInfo.PropertyType;
-          if (typeof(IHasId).IsAssignableFrom(typeOfProperty))
-          {
-            var childItem = propertyInfo.GetValue(item);
-            if (childItem == null)
-              continue;
-            IHasId existPropertyValue = this.GetEqualFromDb(childItem as IHasId);
-            if (existPropertyValue != null)
-              propertyInfo.SetValue(item, existPropertyValue);
-            else
-              session.SaveOrUpdate(childItem);
-          }
-        }
+        this.SaveRelatedEntities(item, session);
         session.Save(item);
         transaction.Commit();
       }
