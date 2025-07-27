@@ -11,13 +11,13 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class CoinController : ControllerBase
 {
-  private ItemsService itemsService;
+  private CoinService coinService;
   private IMapper mapper;
   
   [HttpGet]
   public async Task<ActionResult<List<PartialCoinResponse>>> GetAllCoins()
   {
-    var coins = await this.itemsService.GetItemsByCriteria<Coin>(coin => true);
+    var coins = await this.coinService.GetItemsByCriteria<Coin>(coin => true);
     var response = coins
       .Select(coin => new PartialCoinResponse(coin));
     return Ok(response);
@@ -26,29 +26,42 @@ public class CoinController : ControllerBase
   [HttpGet("{id}")]
   public async Task<ActionResult<FullCoinResponse>> Get(int id)
   {
-    var coin = await this.itemsService.GetItemByIdAsync<Coin>(id);
+    var coin = await this.coinService.GetItemByIdAsync<Coin>(id);
     var response = new FullCoinResponse(coin);
     return Ok(response);
   }
 
   [HttpPost]
-  public async Task<ActionResult<string>> Post([FromBody] PartialCoinResponse partialCoin, IMapper mapper)
+  public async Task<ActionResult<string>> Post([FromBody] PartialCoinResponse partialCoin)
   {
     if (partialCoin == null)
-      return  BadRequest(ResponseDescription.NotBeNull);
-    var newCoin = mapper.Map<Coin>(partialCoin);
-    var result = await this.itemsService.AddItem(newCoin);
-    if (result == ResultDescription.Success)
+      return  this.BadRequest(ResponseDescription.NotBeNull);
+    var newCoin = this.mapper.Map<Coin>(partialCoin);
+    var resultOfAdding = await this.coinService.AddItem(newCoin);
+    if (resultOfAdding == ResultDescription.Success)
       return this.Created();
-    else if (result == ResultDescription.IsExist)
-      return this.Conflict(result);
+    else if (resultOfAdding == ResultDescription.IsExist)
+      return this.Conflict(resultOfAdding);
+    else
+      return this.BadRequest(ResponseDescription.UnexpectedResult);
+  }
+
+  [HttpPut]
+  public async Task<ActionResult<string>> Update([FromBody] FullCoinResponse coinResponse)
+  {
+    if (coinResponse == null)
+      return this.BadRequest(ResponseDescription.NotBeNull);
+    var coinToChange = this.mapper.Map<Coin>(coinResponse);
+    var resultOfChange = await this.coinService.Update(coinToChange);
+    if (resultOfChange == ResultDescription.Success)
+      return this.Ok(ResultDescription.Success);
     else
       return this.BadRequest(ResponseDescription.UnexpectedResult);
   }
 
   public CoinController(IMapper mapper)
   {
-    this.itemsService = new ItemsService();
+    this.coinService = new CoinService();
     this.mapper = mapper;
   }
 }
