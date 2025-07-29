@@ -20,7 +20,7 @@ public class Tests
       Name = "1 rouble",
       Nominal = "1",
       Currency = "rouble",
-      ItemType = new CollectionItemType {Name = "Coin"},
+      ItemType = new CollectionItemType("Coin"),
       
     };
     var response = new PartialCoinResponse(coin);

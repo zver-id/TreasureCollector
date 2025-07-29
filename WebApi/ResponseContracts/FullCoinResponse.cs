@@ -5,14 +5,16 @@ namespace WebApi.ResponseContracts;
 
 public class FullCoinResponse : IResponse
 {
-  public int Id { get; }
-  public string ItemType { get; }
-  public string Name { get; }
-  public string Nominal { get; }
-  public string Currency { get; }
-  public string Country { get; }
-  public int Year { get; }
+  public int Id { get; set; }
+  public string ItemType { get; set; }
+  public string Name { get; set; }
+  public string Nominal { get; set; }
+  public string Currency { get; set; }
+  public string Country { get; set; }
+  public int Year { get; set; }
 
+  public FullCoinResponse() { }
+  
   public FullCoinResponse(Coin coin)
   {
     this.Id = coin.Id;

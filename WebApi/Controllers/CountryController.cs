@@ -9,7 +9,7 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class CountryController : ControllerBase
 {
-  private readonly ItemsService coinService = new ();
+  private readonly CoinService coinService = new ();
   
   [HttpGet]
   public async Task<ActionResult<List<CountryResponse>>> GetAllCoins()

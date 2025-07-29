@@ -2,6 +2,7 @@
 
 public class Coin : CollectibleItem
 {
+  public new const string NameOfClass = "Монета"; 
   public virtual string? Nominal {get; set;}
   public virtual string? Currency {get; set;}
   public virtual int Year {get; set;}

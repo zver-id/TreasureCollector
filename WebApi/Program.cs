@@ -20,12 +20,13 @@ public class Program
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddSingleton<ItemsService>();
+    builder.Services.AddSingleton<CoinService>();
+    builder.Services.AddSingleton<InventoryReportService>();
 
     ILoggerFactory loggerFactory = LoggerFactory.Create(logBuilder => logBuilder.AddJsonConsole());
 
     var mappingConfig = new MapperConfiguration(
-      cfg => cfg.AddProfile<MappingsConfiguration>(),
+      cfg => cfg.AddProfile<ResponseToObjectMappings>(),
       loggerFactory);
     var mapper = mappingConfig.CreateMapper();
     builder.Services.AddSingleton(mapper);

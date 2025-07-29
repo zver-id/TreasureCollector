@@ -7,27 +7,44 @@ using TreasureCollector.Interfaces;
 
 namespace TreasureCollector.Application.Services;
 
-public class ItemsService
+/// <summary>
+/// Сервис для работы с монетами в коллекции.
+/// </summary>
+public class CoinService
 {
   private readonly IItemsRepository repository = new DbRepository();
   
-  public Task AddItem(IHasId item)
+  public Task<string> AddItem(IHasId item)
   {
-    //TODO добавить валидацию добавления
     return Task.Run(() => 
       {
-        this.repository.Add(item);
-        return Task.CompletedTask;
+        try
+        {
+          this.repository.Add(item);
+        }
+        catch (ArgumentException)
+        {
+          return ResultDescription.IsExist;
+        }
+        return ResultDescription.Success;
       }
     );
   }
 
-  public Task UpdateItemAsync(IHasId item)
+  public Task<string> Update(IHasId item)
   {
     return Task.Run(() =>
       {
-        this.repository.Update(item);
-        return Task.CompletedTask;
+        try
+        {
+          this.repository.Update(item);
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine(e.Message);
+          throw;
+        }
+        return ResultDescription.Success;
       }
     );
   }

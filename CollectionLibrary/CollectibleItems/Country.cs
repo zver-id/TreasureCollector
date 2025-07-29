@@ -11,6 +11,11 @@ public class Country : IHasId
   [Unique]
   public virtual string Name { get; set; }
 
+  public override string ToString()
+  {
+    return $"Country: {Name}";
+  }
+
   [Obsolete("Только для использования в NHibernate", true)]
   public Country()
   {

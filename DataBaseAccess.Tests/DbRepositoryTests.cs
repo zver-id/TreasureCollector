@@ -14,7 +14,7 @@ public class DbRepositoryTests
     var typeCoin = this.repository.Get<CollectionItemType>("Name", "Coin");
     if (typeCoin == null)
     {
-      typeCoin = new CollectionItemType{Name = "Coin"};
+      typeCoin = new CollectionItemType("Coin");
       this.repository.Add(typeCoin);
     }
     List<string> countryNames = ["USA", "Russia"];
