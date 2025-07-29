@@ -9,7 +9,12 @@ public class CollectionItemType : IHasId
   
   [Unique]
   public virtual string Name { get; set; }
-  
+
+  public override string ToString()
+  {
+    return $"Type: {Name}";
+  }
+
   [Obsolete("Только для использования в NHibernate", true)]
   public CollectionItemType() { }
   

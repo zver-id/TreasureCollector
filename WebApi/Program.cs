@@ -21,6 +21,7 @@ public class Program
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddSingleton<CoinService>();
+    builder.Services.AddSingleton<InventoryReportService>();
 
     ILoggerFactory loggerFactory = LoggerFactory.Create(logBuilder => logBuilder.AddJsonConsole());
 

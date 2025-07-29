@@ -4,6 +4,7 @@ namespace CollectionLibrary.CollectibleItems;
 
 public abstract class CollectibleItem : IHasId
 {
+  public const string NameOfClass = "Коллекционный предмет";
   public virtual int Id { get; set; }
   public virtual CollectionItemType ItemType { get; init; }
   

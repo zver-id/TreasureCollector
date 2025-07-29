@@ -7,6 +7,9 @@ using TreasureCollector.Interfaces;
 
 namespace TreasureCollector.Application.Services;
 
+/// <summary>
+/// Сервис для работы с монетами в коллекции.
+/// </summary>
 public class CoinService
 {
   private readonly IItemsRepository repository = new DbRepository();
@@ -23,7 +26,6 @@ public class CoinService
         {
           return ResultDescription.IsExist;
         }
-        
         return ResultDescription.Success;
       }
     );
