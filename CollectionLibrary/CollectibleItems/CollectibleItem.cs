@@ -2,6 +2,8 @@
 
 namespace CollectionLibrary.CollectibleItems;
 
+using TreasureCollector.Interfaces;
+
 public abstract class CollectibleItem : IHasId
 {
   public const string NameOfClass = "Коллекционный предмет";

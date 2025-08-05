@@ -4,6 +4,8 @@ using CollectionLibrary.Nhibernate.Infrastructure;
 
 namespace CollectionLibrary.CollectibleItems;
 
+using TreasureCollector.Interfaces;
+
 public class Country : IHasId
 {
   public virtual int Id {get; set;}

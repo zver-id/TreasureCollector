@@ -17,25 +17,23 @@ public class CoinController : ControllerBase
   [HttpGet]
   public async Task<ActionResult<List<PartialCoinResponse>>> GetAllCoins()
   {
-    var coins = await this.coinService.GetItemsByCriteria<Coin>(coin => true);
-    var response = coins
+    List<Coin> coins = await this.coinService.GetItemsByCriteria<Coin>(coin => true);
+    IEnumerable<PartialCoinResponse> response = coins
       .Select(coin => new PartialCoinResponse(coin));
-    return Ok(response);
+    return this.Ok(response);
   }
 
   [HttpGet("{id}")]
   public async Task<ActionResult<FullCoinResponse>> Get(int id)
   {
     var coin = await this.coinService.GetItemByIdAsync<Coin>(id);
-    var response = new FullCoinResponse(coin);
+    var response = this.mapper.Map<FullCoinResponse>(coin);
     return Ok(response);
   }
 
   [HttpPost]
   public async Task<ActionResult<string>> Post([FromBody] PartialCoinResponse partialCoin)
   {
-    if (partialCoin == null)
-      return  this.BadRequest(ResponseDescription.NotBeNull);
     var newCoin = this.mapper.Map<Coin>(partialCoin);
     var resultOfAdding = await this.coinService.AddItem(newCoin);
     if (resultOfAdding == ResultDescription.Success)
@@ -49,8 +47,6 @@ public class CoinController : ControllerBase
   [HttpPut]
   public async Task<ActionResult<string>> Update([FromBody] FullCoinResponse coinResponse)
   {
-    if (coinResponse == null)
-      return this.BadRequest(ResponseDescription.NotBeNull);
     var coinToChange = this.mapper.Map<Coin>(coinResponse);
     var resultOfChange = await this.coinService.Update(coinToChange);
     if (resultOfChange == ResultDescription.Success)

@@ -10,10 +10,8 @@ namespace TreasureCollector.Application.Services;
 /// <summary>
 /// Сервис для работы с монетами в коллекции.
 /// </summary>
-public class CoinService
+public class CoinService : ServiceBase
 {
-  private readonly IItemsRepository repository = new DbRepository();
-  
   public Task<string> AddItem(IHasId item)
   {
     return Task.Run(() => 

@@ -93,7 +93,7 @@ public class DbRepository : IItemsRepository
     if (property == null || uniqueAttribute == null)
       throw new ArgumentException("Свойство не уникально или не существует у объекта");
     
-    using var session = NhibernateHelper.OpenSession();
+    using ISession session = NhibernateHelper.OpenSession();
     ICriteria criteria = session.CreateCriteria(typeof(T));
     criteria.Add(Restrictions.Eq(fieldName, value));
     return (T)criteria.UniqueResult();
@@ -101,7 +101,7 @@ public class DbRepository : IItemsRepository
   
   public T GetById<T>(int id)
   {
-    using (var session = NhibernateHelper.OpenSession() )
+    using (ISession session = NhibernateHelper.OpenSession())
     {
       return session.Get<T>(id);
     }
@@ -109,7 +109,7 @@ public class DbRepository : IItemsRepository
   
   public List<T> GetByCriteria<T>(Func<T, bool> criteria) 
   {
-    using (var session = NhibernateHelper.OpenSession() )
+    using (var session = NhibernateHelper.OpenSession())
     {
       return session.Query<T>()
         .AsEnumerable()
@@ -117,10 +117,10 @@ public class DbRepository : IItemsRepository
         .ToList();
     }
   }
-  
+ 
   public void Update(IHasId item)
   {
-    using var session = NhibernateHelper.OpenSession();
+    using ISession session = NhibernateHelper.OpenSession();
     using (ITransaction transaction = session.BeginTransaction())
     {
       this.SaveRelatedEntities(item, session);
@@ -131,7 +131,7 @@ public class DbRepository : IItemsRepository
 
   public void Delete(IHasId item)
   {
-    using var session = NhibernateHelper.OpenSession();
+    using ISession session = NhibernateHelper.OpenSession();
     using (ITransaction  transaction = session.BeginTransaction())
     {
       session.Delete(item);

@@ -10,16 +10,13 @@ using TreasureCollector.Interfaces;
 
 namespace TreasureCollector.Application.Services;
 
+using System.Collections.Generic;
+
 /// <summary>
 /// Получение документов с отчетами о наличии предметов.
 /// </summary>
-public class InventoryReportService
+public class InventoryReportService : ServiceBase
 {
-  /// <summary>
-  /// Репозиторий.
-  /// </summary>
-  private IItemsRepository repository = new DbRepository();
-  
   /// <summary>
   /// Создать отчет о наличии предметов.
   /// </summary>
@@ -27,7 +24,7 @@ public class InventoryReportService
   {
     return Task.Run(() =>
     {
-      var inventory = this.repository.GetByCriteria<T>(x => true);
+      List<T> inventory = this.repository.GetByCriteria<T>(x => true);
 
       var report = new Document();
       Section section = report.AddSection();
@@ -37,14 +34,14 @@ public class InventoryReportService
         .GetField("NameOfClass", BindingFlags.Public | BindingFlags.Static)?
         .GetValue(null)}");
       titleParagraph.ApplyStyle(BuiltinStyle.Title);
-      foreach (var item in inventory)
+      foreach (T item in inventory)
       {
         Paragraph itemParagraph = section.AddParagraph();
         itemParagraph.ApplyStyle(BuiltinStyle.BodyText);
         itemParagraph.AppendText($"Id: {item.GetType().GetProperty("Id")?.GetValue(item)} \n");
 
-        var properties = item.GetType().GetProperties();
-        foreach (var property in properties)
+        PropertyInfo[] properties = item.GetType().GetProperties();
+        foreach (PropertyInfo property in properties)
         {
           if (property.Name == "Id")
             continue;

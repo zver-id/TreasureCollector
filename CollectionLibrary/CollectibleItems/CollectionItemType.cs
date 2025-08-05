@@ -3,6 +3,8 @@ using CollectionLibrary.Nhibernate.Infrastructure;
 
 namespace CollectionLibrary.CollectibleItems;
 
+using TreasureCollector.Interfaces;
+
 public class CollectionItemType : IHasId
 {
   public virtual int Id {get; set;}
