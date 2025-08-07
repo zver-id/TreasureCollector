@@ -56,7 +56,7 @@ public class DbRepository : IItemsRepository
         var childItem = propertyInfo.GetValue(item);
         if (childItem == null)
           continue;
-        IHasId existPropertyValue = this.GetEqualFromDb(childItem as IHasId);
+        var existPropertyValue = this.GetEqualFromDb(childItem as IHasId);
         if (existPropertyValue != null)
           propertyInfo.SetValue(item, existPropertyValue);
         else

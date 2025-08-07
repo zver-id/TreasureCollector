@@ -32,7 +32,7 @@ public class CoinController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<ActionResult<string>> Post([FromBody] PartialCoinResponse partialCoin)
+  public async Task<ActionResult<string>> Post([FromBody] FullCoinResponse partialCoin)
   {
     var newCoin = this.mapper.Map<Coin>(partialCoin);
     var resultOfAdding = await this.coinService.AddItem(newCoin);
