@@ -30,7 +30,7 @@ public class DbRepository : IItemsRepository
       .GetMethod("Get")?
       .MakeGenericMethod(typeOfItem);
     
-    foreach (var property in uniqueProperties)
+    foreach (PropertyInfo property in uniqueProperties)
     {
       var existItem = getMethod?.Invoke(this, new object[] {property.Name, property.GetValue(item)});
       if (existItem != null)
@@ -50,7 +50,7 @@ public class DbRepository : IItemsRepository
     PropertyInfo[] propertyInfos = typeOfItem.GetProperties();
     foreach (PropertyInfo propertyInfo in propertyInfos)
     {
-      var typeOfProperty = propertyInfo.PropertyType;
+      Type typeOfProperty = propertyInfo.PropertyType;
       if (typeof(IHasId).IsAssignableFrom(typeOfProperty))
       {
         var childItem = propertyInfo.GetValue(item);
@@ -73,15 +73,13 @@ public class DbRepository : IItemsRepository
   {
     if (this.GetEqualFromDb(item) != null)
       throw new ArgumentException($"Элемент типа {item} уже существует");
-    
-    using (ISession session = NhibernateHelper.OpenSession())
+
+    using ISession session = NhibernateHelper.OpenSession();
+    using (ITransaction transaction = session.BeginTransaction())
     {
-      using (ITransaction transaction = session.BeginTransaction())
-      {
-        this.SaveRelatedEntities(item, session);
-        session.Save(item);
-        transaction.Commit();
-      }
+      this.SaveRelatedEntities(item, session);
+      session.Save(item);
+      transaction.Commit();
     }
   }
   

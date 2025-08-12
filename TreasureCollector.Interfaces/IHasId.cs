@@ -1,9 +1,12 @@
 ﻿namespace TreasureCollector.Interfaces;
 
+/// <summary>
+/// Объект, хранимый в репозитории.
+/// </summary>
 public interface IHasId
 {
   /// <summary>
-  /// ID объекта.
+  /// Уникальный ID объекта.
   /// </summary>
   public int Id { get; set; }
   
