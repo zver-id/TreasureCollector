@@ -5,7 +5,7 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
-using Settings = DataBaseAccess.Settings;
+using Commons;
 
 namespace DataBaseAccess;
 
@@ -72,7 +72,7 @@ public static class NhibernateHelper
   private static ISessionFactory CreateSessionFactory()
   {
     var cfg = new StoreConfiguration();
-    string connectionString = Settings.DatabaseConnectionString;
+    string connectionString = ApplicationSettings.databaseConnectionString;
     return Fluently.Configure()
       .Database(PostgreSQLConfiguration.Standard
         .ConnectionString(connectionString)

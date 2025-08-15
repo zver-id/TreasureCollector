@@ -30,7 +30,8 @@ public class Program
       loggerFactory);
     var mapper = mappingConfig.CreateMapper();
     builder.Services.AddSingleton(mapper);
-
+    
+    builder.Services.AddControllers();
 
     builder.Services.AddCors(options =>
     {
@@ -42,8 +43,6 @@ public class Program
           policyBuilder.AllowAnyHeader();
         });
     });
-
-    builder.Services.AddControllers();
 
     var app = builder.Build();
 

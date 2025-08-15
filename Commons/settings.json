@@ -1,0 +1,4 @@
+﻿{
+  "databaseConnectionString":"Host=spd-Zverev-BD.dev.comp.npo;Port=5432;Database=TreasureCollector;Username=rxuser;Password=Qwerty123",
+  "imageFolder": "images"
+}
