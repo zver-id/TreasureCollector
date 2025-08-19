@@ -4,19 +4,19 @@ using Newtonsoft.Json;
 namespace Commons;
 
 /// <summary>
-/// Настройки работы с базой данных.
+/// Общие настройки приложения.
 /// </summary>
 public static class ApplicationSettings
 {
   /// <summary>
   /// Строка подключения к базе данных.
   /// </summary>
-  public static readonly string databaseConnectionString;
-  
+  public static string databaseConnectionString;
+
   /// <summary>
   /// Папка хранения изображений.
   /// </summary>
-  public static readonly string imagesFolder;
+  public static string imagesFolder;
 
   /// <summary>
   /// Конструктор.

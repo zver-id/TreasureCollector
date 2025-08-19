@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CollectionLibrary.Nhibernate.Infrastructure;
+namespace CollectionLibrary;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class UniqueAttribute : Attribute

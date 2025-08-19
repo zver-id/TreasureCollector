@@ -1,6 +1,4 @@
-﻿using CollectionLibrary.Nhibernate.Infrastructure;
-
-namespace CollectionLibrary.CollectibleItems;
+﻿namespace CollectionLibrary.CollectibleItems;
 
 using TreasureCollector.Interfaces;
 

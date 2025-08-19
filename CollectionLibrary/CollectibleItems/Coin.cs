@@ -28,6 +28,24 @@ public class Coin : CollectibleItem
   /// Год выпуска.
   /// </summary>
   public virtual int Year {get; set;}
+  
+  /// <summary>
+  /// Изображение аверса.
+  /// </summary>
+  [Image]
+  public virtual string AversImage {get; set;}
+  
+  /// <summary>
+  /// Изображение реверса.
+  /// </summary>
+  [Image]
+  public virtual string ReversImage {get; set;}
+  
+  /// <summary>
+  /// Изображение гурта.
+  /// </summary>
+  [Image]
+  public virtual string EdgeImage {get; set;}
 
   #endregion
 

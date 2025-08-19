@@ -1,4 +1,5 @@
 using System.Reflection;
+using CollectionLibrary;
 using CollectionLibrary.CollectibleItems;
 using CollectionLibrary.Nhibernate.Infrastructure;
 using NHibernate;

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AutoMapper;
 using FluentNHibernate.Cfg;
 using Microsoft.AspNetCore.Cors.Infrastructure;
