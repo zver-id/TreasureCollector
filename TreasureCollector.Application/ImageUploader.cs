@@ -23,8 +23,8 @@ public static class ImageUploader
     if (!Directory.Exists(uploadsFolder))
       Directory.CreateDirectory(uploadsFolder);
 
-    var uniqueFileName = $"{Guid.NewGuid()}_{imageType}.jpg";
-    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+    var fileName = $"{Guid.NewGuid()}_{imageType}.jpg";
+    var filePath = Path.Combine(uploadsFolder, fileName);
     
     var partsOfDataString = base64File.Split(',');
     if (partsOfDataString.Length > 1 && partsOfDataString[0].Contains("base64"))
@@ -33,6 +33,6 @@ public static class ImageUploader
     var imageBytes = Convert.FromBase64String(base64File);
     File.WriteAllBytesAsync(filePath, imageBytes);
     
-    return $"{filePath}";
+    return fileName;
   }
 }
