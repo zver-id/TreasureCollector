@@ -1,4 +1,5 @@
 using System.Reflection;
+using CollectionLibrary;
 using CollectionLibrary.CollectibleItems;
 using CollectionLibrary.Nhibernate.Infrastructure;
 using NHibernate;
@@ -30,7 +31,7 @@ public class DbRepository : IItemsRepository
       .GetMethod("Get")?
       .MakeGenericMethod(typeOfItem);
     
-    foreach (var property in uniqueProperties)
+    foreach (PropertyInfo property in uniqueProperties)
     {
       var existItem = getMethod?.Invoke(this, new object[] {property.Name, property.GetValue(item)});
       if (existItem != null)
@@ -50,13 +51,13 @@ public class DbRepository : IItemsRepository
     PropertyInfo[] propertyInfos = typeOfItem.GetProperties();
     foreach (PropertyInfo propertyInfo in propertyInfos)
     {
-      var typeOfProperty = propertyInfo.PropertyType;
+      Type typeOfProperty = propertyInfo.PropertyType;
       if (typeof(IHasId).IsAssignableFrom(typeOfProperty))
       {
         var childItem = propertyInfo.GetValue(item);
         if (childItem == null)
           continue;
-        IHasId existPropertyValue = this.GetEqualFromDb(childItem as IHasId);
+        var existPropertyValue = this.GetEqualFromDb(childItem as IHasId);
         if (existPropertyValue != null)
           propertyInfo.SetValue(item, existPropertyValue);
         else
@@ -73,15 +74,13 @@ public class DbRepository : IItemsRepository
   {
     if (this.GetEqualFromDb(item) != null)
       throw new ArgumentException($"Элемент типа {item} уже существует");
-    
-    using (ISession session = NhibernateHelper.OpenSession())
+
+    using ISession session = NhibernateHelper.OpenSession();
+    using (ITransaction transaction = session.BeginTransaction())
     {
-      using (ITransaction transaction = session.BeginTransaction())
-      {
-        this.SaveRelatedEntities(item, session);
-        session.Save(item);
-        transaction.Commit();
-      }
+      this.SaveRelatedEntities(item, session);
+      session.Save(item);
+      transaction.Commit();
     }
   }
   
@@ -93,7 +92,7 @@ public class DbRepository : IItemsRepository
     if (property == null || uniqueAttribute == null)
       throw new ArgumentException("Свойство не уникально или не существует у объекта");
     
-    using var session = NhibernateHelper.OpenSession();
+    using ISession session = NhibernateHelper.OpenSession();
     ICriteria criteria = session.CreateCriteria(typeof(T));
     criteria.Add(Restrictions.Eq(fieldName, value));
     return (T)criteria.UniqueResult();
@@ -101,7 +100,7 @@ public class DbRepository : IItemsRepository
   
   public T GetById<T>(int id)
   {
-    using (var session = NhibernateHelper.OpenSession() )
+    using (ISession session = NhibernateHelper.OpenSession())
     {
       return session.Get<T>(id);
     }
@@ -109,7 +108,7 @@ public class DbRepository : IItemsRepository
   
   public List<T> GetByCriteria<T>(Func<T, bool> criteria) 
   {
-    using (var session = NhibernateHelper.OpenSession() )
+    using (var session = NhibernateHelper.OpenSession())
     {
       return session.Query<T>()
         .AsEnumerable()
@@ -117,10 +116,10 @@ public class DbRepository : IItemsRepository
         .ToList();
     }
   }
-  
+ 
   public void Update(IHasId item)
   {
-    using var session = NhibernateHelper.OpenSession();
+    using ISession session = NhibernateHelper.OpenSession();
     using (ITransaction transaction = session.BeginTransaction())
     {
       this.SaveRelatedEntities(item, session);
@@ -131,7 +130,7 @@ public class DbRepository : IItemsRepository
 
   public void Delete(IHasId item)
   {
-    using var session = NhibernateHelper.OpenSession();
+    using ISession session = NhibernateHelper.OpenSession();
     using (ITransaction  transaction = session.BeginTransaction())
     {
       session.Delete(item);

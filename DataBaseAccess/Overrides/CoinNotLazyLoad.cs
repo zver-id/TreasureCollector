@@ -4,6 +4,9 @@ using FluentNHibernate.Automapping.Alterations;
 
 namespace CollectionLibrary.Nhibernate.Infrastructure.Overrides;
 
+/// <summary>
+/// Отключение ленивной загрузки для связанных сущностей класса Coin.
+/// </summary>
 public class CoinNotLazyLoad : IAutoMappingOverride<Coin>
 {
   public void Override(AutoMapping<Coin> mapping)

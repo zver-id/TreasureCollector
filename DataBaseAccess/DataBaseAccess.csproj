@@ -8,21 +8,18 @@
 
     <ItemGroup>
       <PackageReference Include="FluentNHibernate" Version="3.4.1" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="NHibernate" Version="5.5.2" />
       <PackageReference Include="Npgsql" Version="9.0.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\CollectionLibrary\CollectionLibrary.csproj" />
+      <ProjectReference Include="..\Commons\Commons.csproj" />
       <ProjectReference Include="..\TreasureCollector.Interfaces\TreasureCollector.Interfaces.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="settings.json" />
-      <Content Include="settings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <Content Update="settings.json.example">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

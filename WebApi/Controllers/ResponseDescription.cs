@@ -14,5 +14,9 @@ public class ResponseDescription
   /// Запрос не может быть пустым.
   /// </summary>
   public const string NotBeNull = "Cannot be null";
-
+  
+  /// <summary>
+  /// Файл не найден.
+  /// </summary>
+  public const string FileNotFound = "File not found";
 }

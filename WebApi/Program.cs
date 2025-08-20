@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AutoMapper;
 using FluentNHibernate.Cfg;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -26,11 +27,16 @@ public class Program
     ILoggerFactory loggerFactory = LoggerFactory.Create(logBuilder => logBuilder.AddJsonConsole());
 
     var mappingConfig = new MapperConfiguration(
-      cfg => cfg.AddProfile<ResponseToObjectMappings>(),
+      cfg =>
+      {
+        cfg.AddProfile<ResponseToObjectMappings>();
+        cfg.AddProfile<ObjectToResponseMappings>();
+      },
       loggerFactory);
     var mapper = mappingConfig.CreateMapper();
     builder.Services.AddSingleton(mapper);
-
+    
+    builder.Services.AddControllers();
 
     builder.Services.AddCors(options =>
     {
@@ -42,8 +48,6 @@ public class Program
           policyBuilder.AllowAnyHeader();
         });
     });
-
-    builder.Services.AddControllers();
 
     var app = builder.Build();
 
