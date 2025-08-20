@@ -1,12 +1,9 @@
-﻿using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
 using CollectionLibrary.CollectibleItems;
 using WebApi.ResponseContracts;
+using TreasureCollector.Interfaces;
 
 namespace WebApi.Mappings;
-
-using AutoMapper.Internal;
-using TreasureCollector.Interfaces;
 
 /// <summary>
 /// Конфигурация маппинга из ответов http в объекты приложения.
@@ -32,7 +29,7 @@ public class ResponseToObjectMappings : Profile
   /// </summary>
   public ResponseToObjectMappings()
   {
-    ConfigureHasIdMappings<PartialCoinResponse, Coin>();
-    ConfigureHasIdMappings<FullCoinResponse, Coin>();
+    this.ConfigureHasIdMappings<PartialCoinResponse, Coin>();
+    this.ConfigureHasIdMappings<FullCoinResponse, Coin>();
   }
 }
