@@ -7,6 +7,9 @@ using WebApi.Mappings;
 
 namespace WebApi;
 
+/// <summary>
+/// Точка входа в программу.
+/// </summary>
 public class Program
 {
   public static void Main(string[] args)
@@ -29,8 +32,8 @@ public class Program
     var mappingConfig = new MapperConfiguration(
       cfg =>
       {
-        cfg.AddProfile<ResponseToObjectMappings>();
         cfg.AddProfile<ObjectToResponseMappings>();
+        cfg.AddProfile<ResponseToObjectMappings>();
       },
       loggerFactory);
     var mapper = mappingConfig.CreateMapper();

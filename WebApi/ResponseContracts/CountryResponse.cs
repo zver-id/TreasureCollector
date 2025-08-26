@@ -15,6 +15,10 @@ public class CountryResponse : IResponse
   /// </summary>
   public string Name { get; }
 
+  /// <summary>
+  /// Конструктор.
+  /// </summary>
+  /// <param name="country">Страна.</param>
   public CountryResponse(Country country)
   {
     this.Id = country.Id;

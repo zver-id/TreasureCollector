@@ -47,8 +47,17 @@ public abstract class CollectibleItem : IHasId
   #endregion
   
   #region Конструкторы
+  
+  /// <summary>
+  /// Конструктор.
+  /// </summary>
   protected CollectibleItem() { }
 
+  /// <summary>
+  /// Конструктор.
+  /// </summary>
+  /// <param name="collectionItemType">Тип предмета.</param>
+  /// <param name="country">Страна происхождения.</param>
   protected CollectibleItem(CollectionItemType collectionItemType, Country? country = null)
   {
     this.ItemType = collectionItemType;

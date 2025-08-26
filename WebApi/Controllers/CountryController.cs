@@ -14,7 +14,10 @@ public class CountryController : ControllerBase
 {
   private readonly CoinService coinService = new ();
   
-  
+  /// <summary>
+  /// Получить список всех стран.
+  /// </summary>
+  /// <returns>Список стран.</returns>
   [HttpGet]
   public async Task<ActionResult<List<CountryResponse>>> GetAllCountries()
   {

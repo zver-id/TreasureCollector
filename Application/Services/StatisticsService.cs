@@ -13,6 +13,11 @@ using System.Threading.Tasks;
 /// </summary>
 public class StatisticsService : ServiceBase
 {
+  /// <summary>
+  /// Получить статистику по монетам.
+  /// </summary>
+  /// <param name="getField">Поле по которой будет получаться статистика.</param>
+  /// <returns>Стастистика в формате "Поле: количество монет".</returns>
   public Task<Dictionary<string, int>> GetFieldStatistics(Func<Coin, string> getField)
   {
     return Task.Run(() =>

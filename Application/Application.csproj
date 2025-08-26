@@ -4,11 +4,13 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>Application</PackageId>
+        <RootNamespace>TreasureCollector.Application</RootNamespace>
         <AssemblyName>TreasureCollector.Application</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TreasureCollector.Interfaces\TreasureCollector.Interfaces.csproj" />
+      <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
       <ProjectReference Include="..\DataBaseAccess\DataBaseAccess.csproj" />
     </ItemGroup>
 
