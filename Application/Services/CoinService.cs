@@ -35,7 +35,7 @@ public class CoinService : ServiceBase
   }
 
   /// <summary>
-  /// Обноавить предмет.
+  /// Обновить предмет.
   /// </summary>
   /// <param name="item">Предмет.</param>
   /// <returns>Результат выполнения добавления.</returns>

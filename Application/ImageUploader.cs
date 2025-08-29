@@ -15,7 +15,7 @@ public static class ImageUploader
   /// </summary>
   /// <param name="base64File">Изображение.</param>
   /// <param name="imageType">Тип изображения.</param>
-  /// <returns>Путь до сохраненного изображения.</returns>
+  /// <returns>Путь до сохраненного изображения или пустую строку если извлечь изображение не удалось.</returns>
   public static string SaveImage(string base64File, string imageType)
   {
     var uploadsFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
@@ -29,10 +29,16 @@ public static class ImageUploader
     var partsOfDataString = base64File.Split(',');
     if (partsOfDataString.Length > 1 && partsOfDataString[0].Contains("base64"))
       base64File = partsOfDataString[1];
-  
-    var imageBytes = Convert.FromBase64String(base64File);
-    File.WriteAllBytesAsync(filePath, imageBytes);
     
+    try
+    {
+      var imageBytes = Convert.FromBase64String(base64File);
+      File.WriteAllBytesAsync(filePath, imageBytes);
+    }
+    catch (FormatException ex)
+    {
+      return string.Empty;
+    }
     return fileName;
   }
 }

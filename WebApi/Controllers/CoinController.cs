@@ -108,8 +108,12 @@ public class CoinController : ControllerBase
       if (property.GetCustomAttribute<ImageAttribute>() != null)
       {
         if (property.GetValue(coin) != null)
-          property.SetValue(coin,
-            ImageUploader.SaveImage(property.GetValue(coin) as string, property.Name));
+        {
+          string newImageName = ImageUploader.SaveImage(property.GetValue(coin) as string,
+            property.Name);
+          if (newImageName != string.Empty)
+            property.SetValue(coin, newImageName);
+        }
       }
     }
   }
