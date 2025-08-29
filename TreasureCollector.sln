@@ -4,11 +4,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionLibrary", "Collec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBaseAccess", "DataBaseAccess\DataBaseAccess.csproj", "{14E5ABAA-CA10-4F56-8FC5-64A1CF0DA18F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasureCollector.Interfaces", "TreasureCollector.Interfaces\TreasureCollector.Interfaces.csproj", "{8675C737-0D50-4EC2-96D4-CD2FE6E85D8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{8675C737-0D50-4EC2-96D4-CD2FE6E85D8D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{D8B954AB-4D4B-4A11-B60C-64C0B5D77621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasureCollector.Application", "TreasureCollector.Application\TreasureCollector.Application.csproj", "{AA14B273-BBAB-436E-9D37-27C3F918C9A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{AA14B273-BBAB-436E-9D37-27C3F918C9A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBaseAccess.Tests", "DataBaseAccess.Tests\DataBaseAccess.Tests.csproj", "{5847503F-C1E5-4A86-8FE6-C8AA8DDE7967}"
 EndProject

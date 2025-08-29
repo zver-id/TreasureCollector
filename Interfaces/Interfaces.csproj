@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <PackageId>Interfaces</PackageId>
+        <RootNamespace>TreasureCollector.Interfaces</RootNamespace>
     </PropertyGroup>
 
 </Project>

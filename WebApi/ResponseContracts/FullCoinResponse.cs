@@ -55,9 +55,19 @@ public class FullCoinResponse : IResponse
   public string? AversImagePath { get; set; }
   
   /// <summary>
+  /// Изображение реверса.
+  /// </summary>
+  public string? ReversImage { get; set; }
+  
+  /// <summary>
   /// Путь до изображения реверса.
   /// </summary>
   public string? ReversImagePath { get; set; }
+  
+  /// <summary>
+  /// Изображение гурта.
+  /// </summary>
+  public string? EdgeImage { get; set; }
   
   /// <summary>
   /// Путь до изображения гурта.

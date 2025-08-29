@@ -4,6 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>TreasureCollector</AssemblyName>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,7 +16,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TreasureCollector.Application\TreasureCollector.Application.csproj" />
+      <ProjectReference Include="..\Application\Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

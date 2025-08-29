@@ -18,6 +18,8 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class CoinController : ControllerBase
 {
+  #region Поля и свойства
+  
   /// <summary>
   /// Сервис для работы с монетами.
   /// </summary>
@@ -27,6 +29,10 @@ public class CoinController : ControllerBase
   /// Маппер.
   /// </summary>
   private readonly IMapper mapper;
+  
+  #endregion
+
+  # region Методы
   
   /// <summary>
   /// Получить все монеты.
@@ -49,9 +55,9 @@ public class CoinController : ControllerBase
   [HttpGet("{id}")]
   public async Task<ActionResult<FullCoinResponse>> Get(int id)
   {
-    var coin = await this.coinService.GetItemByIdAsync<Coin>(id);
+    var coin = await this.coinService.GetItemById<Coin>(id);
     var response = this.mapper.Map<FullCoinResponse>(coin);
-    return Ok(response);
+    return this.Ok(response);
   }
   
   /// <summary>
@@ -102,11 +108,19 @@ public class CoinController : ControllerBase
       if (property.GetCustomAttribute<ImageAttribute>() != null)
       {
         if (property.GetValue(coin) != null)
-          property.SetValue(coin,
-            ImageUploader.SaveImage(property.GetValue(coin) as string, property.Name));
+        {
+          string newImageName = ImageUploader.SaveImage(property.GetValue(coin) as string,
+            property.Name);
+          if (newImageName != string.Empty)
+            property.SetValue(coin, newImageName);
+        }
       }
     }
   }
+  
+  #endregion
+
+  #region Конструкторы
   
   /// <summary>
   /// Конструктор.
@@ -117,4 +131,6 @@ public class CoinController : ControllerBase
     this.coinService = new CoinService();
     this.mapper = mapper;
   }
+  
+  #endregion
 }

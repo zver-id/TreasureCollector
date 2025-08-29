@@ -61,8 +61,6 @@ public static class NhibernateHelper
   /// <returns>Модель конфигурации базы данных.</returns>
   private static AutoPersistenceModel GetAutoPersistenceModel() =>
     AutoMap.AssemblyOf<CollectibleItem>(new StoreConfiguration())
-      //.Conventions.AddFromAssemblyOf<IdConvention>()
-      //.Conventions.AddFromAssemblyOf<NHibernateInitializer>()
       .UseOverridesFromAssemblyOf<DbRepository>();
 
   /// <summary>
@@ -75,11 +73,8 @@ public static class NhibernateHelper
     string connectionString = ApplicationSettings.databaseConnectionString;
     return Fluently.Configure()
       .Database(PostgreSQLConfiguration.Standard
-        .ConnectionString(connectionString)
-        .ShowSql())
+        .ConnectionString(connectionString))
       .Mappings(x => x.AutoMappings.Add(GetAutoPersistenceModel()))
-      //.Mappings(m => m.AutoMappings
-      //  .Add(AutoMap.AssemblyOf<CollectionItemType>(cfg)))
       .ExposeConfiguration(Expose)
       .BuildSessionFactory();
   }

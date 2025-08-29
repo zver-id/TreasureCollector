@@ -12,6 +12,11 @@ namespace TreasureCollector.Application.Services;
 /// </summary>
 public class CoinService : ServiceBase
 {
+  /// <summary>
+  /// Добавить новый предмет.
+  /// </summary>
+  /// <param name="item">Предмет.</param>
+  /// <returns>Результат выполнения операции.</returns>
   public Task<string> AddItem(IHasId item)
   {
     return Task.Run(() => 
@@ -29,6 +34,11 @@ public class CoinService : ServiceBase
     );
   }
 
+  /// <summary>
+  /// Обновить предмет.
+  /// </summary>
+  /// <param name="item">Предмет.</param>
+  /// <returns>Результат выполнения добавления.</returns>
   public Task<string> Update(IHasId item)
   {
     return Task.Run(() =>
@@ -46,14 +56,26 @@ public class CoinService : ServiceBase
       }
     );
   }
-
-  public Task<T> GetItemByIdAsync<T>(int id)
+  
+  /// <summary>
+  /// Получить элемент по ID.
+  /// </summary>
+  /// <param name="id">ID предмета.</param>
+  /// <typeparam name="T">Тип добавляемого предмета.</typeparam>
+  /// <returns>Искомый предмет.</returns>
+  public Task<T> GetItemById<T>(int id)
   {
     return Task.Run(
       () => this.repository.GetById<T>(id)
       );
   }
 
+  /// <summary>
+  /// Получить предметы по условию.
+  /// </summary>
+  /// <param name="criteria">Критерий поиска.</param>
+  /// <typeparam name="T">Тип предмета.</typeparam>
+  /// <returns>Список искомых предметов.</returns>
   public Task<List<T>> GetItemsByCriteria<T>(Func<T, bool> criteria)
   {
     return Task.Run(() => this.repository.GetByCriteria<T>(criteria));

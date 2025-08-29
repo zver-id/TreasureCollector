@@ -7,6 +7,9 @@ using WebApi.ResponseContracts;
 
 namespace WebApi.Mappings;
 
+/// <summary>
+/// Маппинг для верного сохранения изображений.
+/// </summary>
 public class ObjectToResponseMappings : Profile
 {
   /// <summary>
